@@ -5,8 +5,14 @@ import Product from "./Product";
 class ProductOption extends Model {
   public id!: number;
   public productId!: number;
-  public optionName!: string;
-  public optionValue!: string;
+  public title!: string;
+  public shape!: string;
+  public radius!: number;
+  public type!: string;
+  public values!: string;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 ProductOption.init(
@@ -24,18 +30,34 @@ ProductOption.init(
         key: "id",
       },
     },
-    optionName: {
+    title: {
       type: DataTypes.STRING,
       allowNull: false,
     },
-    optionValue: {
+    shape: {
+      type: DataTypes.ENUM('square', 'circle'),
+      allowNull: true,
+      defaultValue: 'square',
+    },
+    radius: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+    },
+    type: {
+      type: DataTypes.ENUM('text', 'color'),
+      allowNull: true,
+      defaultValue: 'text',
+    },
+    values: {
       type: DataTypes.STRING,
       allowNull: false,
-    },
+    }
   },
   {
     sequelize,
     tableName: "product_options",
+    timestamps: true,
   }
 );
 

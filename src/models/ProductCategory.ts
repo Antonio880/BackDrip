@@ -6,6 +6,9 @@ import Category from "./Category";
 class ProductCategory extends Model {
   public productId!: number;
   public categoryId!: number;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 ProductCategory.init(
@@ -30,6 +33,7 @@ ProductCategory.init(
   {
     sequelize,
     tableName: "product_categories",
+    timestamps: true,
   }
 );
 

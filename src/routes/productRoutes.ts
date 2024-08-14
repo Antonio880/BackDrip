@@ -10,8 +10,8 @@ import { validateToken } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 
-router.get("/products", getProducts);
-router.get("/products/:id", getProductById);
+router.get("/products", validateToken, getProducts);
+router.get("/products/:id", validateToken, getProductById);
 router.post("/products", validateToken, createProduct);
 router.put("/products/:id", validateToken, updateProduct);
 router.delete("/products/:id", validateToken, deleteProduct);

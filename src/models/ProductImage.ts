@@ -5,7 +5,11 @@ import Product from "./Product";
 class ProductImage extends Model {
   public id!: number;
   public productId!: number;
-  public imageUrl!: string;
+  public path!: string;
+  public enabled!: boolean;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 ProductImage.init(
@@ -23,14 +27,20 @@ ProductImage.init(
         key: "id",
       },
     },
-    imageUrl: {
+    path: {
       type: DataTypes.STRING,
       allowNull: false,
     },
+    enabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    }
   },
   {
     sequelize,
     tableName: "product_images",
+    timestamps: true,
   }
 );
 

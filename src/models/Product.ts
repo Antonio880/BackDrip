@@ -4,10 +4,18 @@ import Category from "./Category";
 
 class Product extends Model {
   public id!: number;
+  public enabled!: boolean;
   public name!: string;
-  public price!: number;
+  public slug!: string;
+  public useInMenu!: boolean;
+  public stock!: number;
   public description!: string;
+  public price!: number;
+  public priceWithDiscount!: number;
   public categoryId!: number;
+
+  public readonly createdAt!: Date;
+  public readonly updatedAt!: Date;
 }
 
 Product.init(
@@ -17,17 +25,40 @@ Product.init(
       autoIncrement: true,
       primaryKey: true,
     },
+    enabled: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
     name: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    slug: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    useInMenu: {
+      type: DataTypes.BOOLEAN,
+      allowNull: true,
+      defaultValue: false,
+    },
+    stock: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      defaultValue: 0,
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true,
     },
     price: {
       type: DataTypes.FLOAT,
       allowNull: false,
     },
-    description: {
-      type: DataTypes.TEXT,
-      allowNull: true,
+    priceWithDiscount: {
+      type: DataTypes.FLOAT,
+      allowNull: false,
     },
     categoryId: {
       type: DataTypes.INTEGER,
@@ -35,12 +66,13 @@ Product.init(
       references: {
         model: Category,
         key: 'id',
-      }
+      },
     }
   },
   {
     sequelize,
     tableName: "products",
+    timestamps: true,
   }
 );
 
