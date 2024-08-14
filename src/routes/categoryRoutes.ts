@@ -10,7 +10,7 @@ import { validateToken } from "../middlewares/AuthMiddleware";
 
 const router = Router();
 
-router.get("/", validateToken, getCategories);
+router.get("/search", validateToken, getCategories);
 router.get("/:id", validateToken, getCategoryById);
 router.post("/", validateToken, createCategory);
 router.put("/:id", validateToken, updateCategory);
