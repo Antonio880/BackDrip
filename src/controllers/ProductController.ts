@@ -4,9 +4,10 @@ import Product from '../models/Product';
 import Category from '../models/Category';
 import ProductOption from '../models/ProductOption';
 import ProductImage from '../models/ProductImage';
+import ProductCategory from '../models/ProductCategory';
 
 const buildFilters = (req: Request) => {
-  const { match, category_ids, price_range, option, fields } = req.query;
+  const { match, categoryIds, price_range, option, fields } = req.query;
   const filters: any = {};
 
   if (match) {
@@ -16,9 +17,9 @@ const buildFilters = (req: Request) => {
     ];
   }
 
-  if (category_ids) {
-    filters.category_ids = {
-      [Op.overlap]: (category_ids as string).split(',').map(Number),
+  if (categoryIds) {
+    filters.categoryIds = {
+      [Op.overlap]: (categoryIds as string).split(',').map(Number),
     };
   }
 
@@ -89,21 +90,40 @@ export const getProductById = async (req: Request, res: Response) => {
 
 export const createProduct = async (req: Request, res: Response) => {
   try {
-    const { images, options, ...productData } = req.body;
+    const { images, options, categoryIds, ...productData } = req.body;
+    console.log(productData);
+
     const newProduct = await Product.create(productData);
 
     if (images && images.length) {
       const imagePromises = images.map((image: any) =>
-        ProductImage.create({ ...image, productId: newProduct.id })
+        ProductImage.create({
+          path: image.content,
+          type: image.type,
+          enabled: image.enabled,
+          productId: newProduct.id
+        })
       );
+      
       await Promise.all(imagePromises);
     }
 
     if (options && options.length) {
       const optionPromises = options.map((option: any) =>
-        ProductOption.create({ ...option, productId: newProduct.id })
+        ProductOption.create({
+          ...option,
+          productId: newProduct.id,
+          values: Array.isArray(option.values) ? option.values.join(',') : option.values
+        })
       );
       await Promise.all(optionPromises);
+    }
+
+    if (categoryIds && categoryIds.length) {
+      const categoryPromises = categoryIds.map((categoryId: number) =>
+        ProductCategory.create({ productId: newProduct.id, categoryId })
+      );
+      await Promise.all(categoryPromises);
     }
 
     res.status(201).json(newProduct);

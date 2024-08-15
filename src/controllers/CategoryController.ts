@@ -62,7 +62,7 @@ export const createCategory = async (req: Request, res: Response) => {
       return res.status(400).json({ error: "Name and slug are required" });
     }
 
-    const newCategory = await Category.create({ name, slug, use_in_menu });
+    const newCategory = await Category.create({ name, slug, useInMenu: use_in_menu });
     res.status(201).json(newCategory);
   } catch (error) {
     res.status(500).json({ error: "Internal server error" });
@@ -78,7 +78,7 @@ export const updateCategory = async (req: Request, res: Response) => {
     }
 
     const [updated] = await Category.update(
-      { name, slug, use_in_menu },
+      { name, slug, useInMenu: use_in_menu },
       { where: { id: req.params.id } }
     );
 

@@ -8,7 +8,7 @@ const app = express();
 app.use(express.json());
 
 app.use("/users", userRoutes);
-app.use("/categories", categoryRoutes);
+app.use("/category", categoryRoutes);
 app.use(productRoutes);
 
 const startServer = async () => {

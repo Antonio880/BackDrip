@@ -37,7 +37,7 @@ ProductCategory.init(
   }
 );
 
-Product.belongsToMany(Category, { through: ProductCategory });
-Category.belongsToMany(Product, { through: ProductCategory });
+Product.belongsToMany(Category, { through: ProductCategory, foreignKey: 'productId' });
+Category.belongsToMany(Product, { through: ProductCategory, foreignKey: 'categoryId' });
 
 export default ProductCategory;

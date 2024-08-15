@@ -1,12 +1,12 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import Product from "./Product";
 
 class ProductImage extends Model {
   public id!: number;
-  public productId!: number;
   public path!: string;
-  public enabled!: boolean;
+  public type!: string;
+  public content!: string;
+  public productId!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -19,23 +19,27 @@ ProductImage.init(
       autoIncrement: true,
       primaryKey: true,
     },
-    productId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Product,
-        key: "id",
-      },
-    },
     path: {
+      type: DataTypes.STRING,
+      allowNull: false, 
+    },
+    type: {
       type: DataTypes.STRING,
       allowNull: false,
     },
     enabled: {
       type: DataTypes.BOOLEAN,
       allowNull: true,
-      defaultValue: false,
-    }
+      defaultValue: false
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: {
+        model: "products",
+        key: "id",
+      },
+    },
   },
   {
     sequelize,
@@ -43,7 +47,5 @@ ProductImage.init(
     timestamps: true,
   }
 );
-
-ProductImage.belongsTo(Product, { foreignKey: "productId" });
 
 export default ProductImage;

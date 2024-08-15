@@ -1,6 +1,5 @@
 import { Model, DataTypes } from "sequelize";
 import sequelize from "../config/database";
-import Category from "./Category";
 
 class Product extends Model {
   public id!: number;
@@ -12,7 +11,6 @@ class Product extends Model {
   public description!: string;
   public price!: number;
   public priceWithDiscount!: number;
-  public categoryId!: number;
 
   public readonly createdAt!: Date;
   public readonly updatedAt!: Date;
@@ -59,14 +57,6 @@ Product.init(
     priceWithDiscount: {
       type: DataTypes.FLOAT,
       allowNull: false,
-    },
-    categoryId: {
-      type: DataTypes.INTEGER,
-      allowNull: false,
-      references: {
-        model: Category,
-        key: 'id',
-      },
     }
   },
   {
@@ -75,7 +65,5 @@ Product.init(
     timestamps: true,
   }
 );
-
-Product.belongsTo(Category, { foreignKey: "categoryId" });
 
 export default Product;

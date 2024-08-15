@@ -49,7 +49,7 @@ export const loginUser = async (req: Request, res: Response) => {
 
   try {
     const user = await User.findOne({ where: { email } });
-
+    
     if (!user || !(await bcrypt.compare(password, user.password))) {
       return res.status(401).json({ message: "Credenciais inválidas" });
     }
@@ -72,7 +72,7 @@ export const updateUser = async (req: Request, res: Response) => {
       { where: { id: req.params.id } }
     );
     if (updated) {
-      return res.status(204).send(); // Nenhum corpo deve ser retornado
+      return res.status(204).send(); 
     }
     return res.status(404).json({ error: "User not found" });
   } catch (error) {
@@ -84,7 +84,7 @@ export const deleteUser = async (req: Request, res: Response) => {
   try {
     const deleted = await User.destroy({ where: { id: req.params.id } });
     if (deleted) {
-      return res.status(204).send(); // Nenhum corpo deve ser retornado
+      return res.status(204).send(); 
     }
     return res.status(404).json({ error: "User not found" });
   } catch (error) {
